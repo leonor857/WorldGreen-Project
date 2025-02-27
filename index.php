@@ -1,15 +1,19 @@
-<?php
+<?php 
+ 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
-function loadPage($page) {
-    switch ($page) {
-        case 'home':
-            include 'file_/home.php';
-            break;
-        default:
-            echo "404 - Halaman tidak ditemukan";
-            break;
-    }
+
+
+function loadPage($page){
+  if ($page === 'home'){
+    include 'file_/home.php';
+  }else if ($page === 'login'){
+    include 'file_/login.php';
+  }else if ($page === 'register'){
+    include 'file_/register.php';
+  }else {
+    include 'file_/404/not_found_1.php';
+  }
 }
 
 loadPage($page);
