@@ -30,11 +30,9 @@
             <a class="nav-link text-white" href="#home" style="font-size: 20px;">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href ="#pricing" style="font-size: 20px;">Pricing</a>
+            <a class="nav-link text-white" href ="#pricing" style="font-size: 20px;">Premium</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href ="#product" style="font-size: 20px;">AI Products offer</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#documentation" role="button" data-bs-toggle="dropdown"
               aria-expanded="false" style="font-size: 20px;">

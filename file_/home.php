@@ -12,17 +12,17 @@
 
       <!-- Text Content -->
       <div class="" >
-        <h1 style="font-size:60px;"><b>Starvee Engine Update v.3 (vee-3)</b></h1>
-        <p class="text-muted">Gunakan Futuristik AI chatbot di lokal server kamu,<br />Layanan Chat bot virtual yang
-          bisa kamu gunain untuk bisnis sehari-hari bisa integrasi langsung di aplikasi kamu</p>
+        <h1 style="font-size:60px;"><b>ChatZone Versi Terbaru V.50</b></h1>
+        <p class="text-muted"><b>Gunakan ChatZone Untuk Membantu Anda</b><br/><b>Layanan ChatZone virtual yang
+          bisa kamu gunain untuk sehari-hari langsung di aplikasi kamu</b></p>
 
       </div>
     </div>
   </div>
 <!-- Features Section -->
 <div class="container mt-5">
-  <h2 class="mb-3 fw-bolder">Starvee High Capabilites</h2>
-  <p>Due to high request of AI, The next generation AI Chatbot has been created to be reusable in code optimization in Aurora Server</p>
+  <h2 class="mb-3 fw-bolder"><center>Keunggulan ChatZone</center></h2>
+  <p><center>Berikut Keunggulan ChatZone</center></p>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
     
     <!-- Feature 1 -->
