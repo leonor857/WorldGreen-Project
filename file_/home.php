@@ -113,7 +113,7 @@
     </div>
  
 
-  <footer class="bg-primary text-white text-center ">
+  <footer class="bg-dark text-white text-center ">
     <div class="container">
         <p>&copy; OUR SOCIAL MEDIA</p>
         <div>
