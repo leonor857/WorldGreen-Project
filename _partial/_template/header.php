@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Leonor.AI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="././css/style.css">
@@ -18,7 +18,7 @@
     <div class="container-fluid">
       <a class="navbar-brand text-white fw-bold" href="index.php">
       <h1 class="mb-0">
-          <img src="aset/2.png" alt="Logo Leonor.AI" width="50" height="50" style="margin-right: 10px;">
+          <img src="aset/singa.png" alt="Logo Leonor.AI" width="50" height="50" style="margin-right: 10px;">
           <b>Leonor.AI</b>
       </h1>
 
