@@ -12,8 +12,8 @@
 
       <!-- Text Content -->
       <div class="" >
-        <h1 style="font-size:60px;"><b>ChatZone Versi Terbaru V.50</b></h1>
-        <p class="text-muted"><b>Gunakan ChatZone Untuk Membantu Anda</b><br/><b>Layanan ChatZone virtual yang
+        <h1 style="font-size:60px;"><b>Leonor AI Versi Terbaru V.50</b></h1>
+        <p class="text-muted"><b>Gunakan Leonor AI Untuk Membantu Anda</b><br/><b>Layanan Leonor AI virtual yang
           bisa kamu gunain untuk sehari-hari langsung di aplikasi kamu</b></p>
 
       </div>
