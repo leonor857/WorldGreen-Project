@@ -1,155 +1,197 @@
-<?php
-
-// Include koneksi database
-include 'koneksi.php';
-
-// Proses registrasi jika form disubmit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form
-    $fullname = $_POST['fullname'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm-password'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $no_telp = $_POST['no_telp'];
-    $alamat = $_POST['alamat'];
-
-    // Validasi data
-    if (empty($fullname) || empty($email) || empty($password) || empty($confirm_password) || empty($jenis_kelamin) || empty($no_telp) || empty($alamat)) {
-        $error = "Semua field harus diisi!";
-    } elseif ($password !== $confirm_password) {
-        $error = "Password dan Confirm Password tidak sama!";
-    } else {
-        // Hash password sebelum disimpan ke database
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Query untuk menyimpan data ke database
-        $stmt = $conn->prepare("INSERT INTO tb_users (fullname, email, password, jenis_kelamin, no_telp, alamat, image, role_id, created_at, update_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
-        if (!$stmt) {
-            die("Error dalam query: " . $conn->error); // Tampilkan error jika query gagal
-        }
-
-        // Set default value untuk kolom yang tidak diisi user
-        $image = ''; // Kolom image bisa diisi dengan path default atau dibiarkan kosong
-        $role_id = 1; // Default role_id untuk user biasa
-
-        // Bind parameter ke query
-        $stmt->bind_param("sssisssi", $fullname, $email, $hashed_password, $jenis_kelamin, $no_telp, $alamat, $image, $role_id);
-
-        if ($stmt->execute()) {
-            // Registrasi berhasil
-            $_SESSION['message'] = "Registrasi berhasil! Silakan login.";
-            header("Location: http://localhost/myproject2/?page=login"); // Redirect ke halaman login
-            exit();
-        } else {
-            // Registrasi gagal
-            $error = "Terjadi kesalahan saat registrasi: " . $stmt->error;
-        }
-
-        $stmt->close();
-    }
-}
-?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - Leonor.AI</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <script>
-    // Validasi client-side untuk memastikan password dan confirm password sama
-    function validateForm() {
-      const password = document.querySelector('input[name="password"]').value;
-      const confirmPassword = document.querySelector('input[name="confirm-password"]').value;
-
-      if (password !== confirmPassword) {
-        alert("Password dan Confirm Password tidak sama!");
-        return false;
-      }
-      return true;
+  <title>Daftar - WorldGreen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    .register-container {
+      background: linear-gradient(rgba(46, 139, 87, 0.7), rgba(46, 139, 87, 0.7)), 
+                  url('aset/bg-register.jpg') no-repeat center center/cover;
     }
-  </script>
+    .register-card {
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .form-control:focus {
+      border-color: #2e8b57;
+      box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
+    }
+  </style>
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
-  <!-- Include Header -->
+<body class="d-flex flex-column min-vh-100">
   <?php include '_partial/_template/header.php'; ?>
 
-  <!-- Konten Utama -->
-  <main style="flex: 1; display: flex; justify-content: center; align-items: center; background: url('aset/background.jpg') no-repeat center center/cover; text-align: center;">
-    <div style="max-width: 450px; width: 100%; padding: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 15px; backdrop-filter: blur(10px); box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-      <!-- Logo -->
-      <div style="margin-bottom: 20px;">
-        <img src="aset/singa.png" alt="Chat Zone Logo" style="width: 100px;">
+  <main class="register-container flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="register-card bg-white bg-opacity-90 p-4 p-md-5 rounded-4 shadow">
+            <div class="text-center mb-4">
+              <img src="aset/eco-green.png" alt="WorldGreen Logo" width="100" class="mb-3">
+              <h2 class="text-success">
+                <i class="bi bi-person-plus"></i> Daftar Akun Baru
+              </h2>
+              <p class="text-muted">Bergabunglah dengan komunitas peduli lingkungan</p>
+            </div>
+
+            <?php if (isset($error)): ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $error; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+
+            <form method="POST" class="needs-validation" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="fullname" class="form-label">Nama Lengkap</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-success text-white">
+                      <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama lengkap Anda" required>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Alamat Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-success text-white">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="email@contoh.com" required>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="password" class="form-label">Kata Sandi</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-success text-white">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Minimal 8 karakter" required minlength="8">
+                    <button class="btn btn-outline-success" type="button" id="togglePassword">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="confirm-password" class="form-label">Konfirmasi Kata Sandi</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-success text-white">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Ulangi kata sandi" required>
+                    <button class="btn btn-outline-success" type="button" id="toggleConfirmPassword">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                  <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                    <option value="" selected disabled>Pilih Jenis Kelamin</option>
+                    <option value="1">Laki-laki</option>
+                    <option value="2">Perempuan</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="no_telp" class="form-label">Nomor Telepon</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-success text-white">
+                      <i class="bi bi-telephone"></i>
+                    </span>
+                    <input type="tel" class="form-control" id="no_telp" name="no_telp" placeholder="Contoh: 08123456789" required>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="alamat" class="form-label">Alamat</label>
+                  <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Alamat lengkap Anda" required></textarea>
+                </div>
+
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-success btn-lg w-100 py-2">
+                    <i class="bi bi-person-plus"></i> Daftar Sekarang
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="text-center mt-4">
+              <p class="mb-0">Sudah punya akun? 
+                <a href="?page=login" class="text-success fw-bold text-decoration-none">
+                  <i class="bi bi-box-arrow-in-right"></i> Masuk disini
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <!-- Judul -->
-      <h3 style="color: white; font-size: 22px; margin-bottom: 20px;">Register to Chat Zone</h3>
-
-      <!-- Pesan Error -->
-      <?php if (isset($error)): ?>
-        <div class="alert alert-danger" role="alert">
-          <?php echo $error; ?>
-        </div>
-      <?php endif; ?>
-
-      <!-- Form Register -->
-      <form action="" method="post" onsubmit="return validateForm()">
-        <div style="margin-bottom: 15px;">
-          <input type="text" name="fullname" placeholder="Full Name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <input type="password" name="password" placeholder="Password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <input type="password" name="confirm-password" placeholder="Confirm Password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <select name="jenis_kelamin" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-            <option value="" disabled selected>Pilih Jenis Kelamin</option>
-            <option value="1">Laki-laki</option>
-            <option value="2">Perempuan</option>
-          </select>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <input type="text" name="no_telp" placeholder="No Telepon" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <textarea name="alamat" placeholder="Alamat" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; resize: vertical;"></textarea>
-        </div>
-        <button type="submit" style="width: 100%; padding: 10px; font-size: 18px; background: yellow; color: black; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s;">Register</button>
-      </form>
-
-      <!-- Garis Pemisah -->
-      <hr style="margin: 20px 0; border: 0; border-top: 1px solid white;">
-
-      <!-- Link Login -->
-      <p style="color: black;">Sudah punya akun? <a href="http://localhost/myproject2/?page=login" style="color: blue; text-decoration: none; font-weight: bold;">Login disini!</a></p>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer style="position: absolute; bottom: 0; width: 100%; background: rgba(0, 0, 0, 0.8); color: white; padding: 10px 0; text-align: center;">
-    <div>
-      <p>&copy; Leonor AI | Follow us:</p>
-      <a href="https://www.instagram.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.facebook.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://twitter.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-twitter"></i>
-      </a>
+  <footer class="bg-dark text-white py-4 mt-auto">
+    <div class="container">
+      <div class="text-center">
+        <h5 class="mb-3">Ikuti Kami</h5>
+        <div class="social-links mb-3">
+          <a href="#" class="text-white mx-2"><i class="bi bi-instagram fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-facebook fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-twitter-x fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-linkedin fs-4"></i></a>
+        </div>
+        <p class="mb-0">&copy; 2024 WorldGreen. Seluruh hak cipta dilindungi.</p>
+      </div>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      const password = document.getElementById('password');
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      this.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+    });
+
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+      const confirmPassword = document.getElementById('confirm-password');
+      const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPassword.setAttribute('type', type);
+      this.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+    });
+
+    (function() {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      
+      Array.from(forms).forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          
+          const password = document.getElementById('password').value;
+          const confirmPassword = document.getElementById('confirm-password').value;
+          
+          if (password !== confirmPassword) {
+            alert('Kata sandi dan konfirmasi kata sandi tidak sama!');
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>

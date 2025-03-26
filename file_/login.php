@@ -1,111 +1,99 @@
-<?php
-include 'koneksi.php';
-
-// Proses login jika form disubmit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    // Query untuk mencari pengguna berdasarkan email
-    $stmt = $conn->prepare("SELECT id, fullname, email, password, role_id FROM tb_users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-        // Verifikasi password
-        if (password_verify($password, $user['password'])) {
-            // Simpan data pengguna ke session
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['fullname'] = $user['fullname'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['role_id'] = $user['role_id'];
-            
-            // Redirect berdasarkan role (opsional)
-            if ($user['role_id'] == 2) { // Admin
-                header("Location: index.php?page=admin_dashboard");
-            } else { // User biasa
-                header("Location: index.php?page=user_dashboard");
-            }
-            exit();
-        } else {
-            $error = "Invalid password!";
-        }
-    } else {
-        $error = "Email not found!";
-    }
-    $stmt->close();
-}
-?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Leonor.AI</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="././css/style.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <title>Masuk - WorldGreen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    .login-container {
+      background: linear-gradient(rgba(46, 139, 87, 0.8), rgba(46, 139, 87, 0.8)), 
+                  url('aset/bg-login.jpg') no-repeat center center/cover;
+    }
+    .login-card {
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+    }
+  </style>
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
-  <!-- Include Header -->
+<body class="d-flex flex-column min-vh-100">
+  
   <?php include './_partial/_template/header.php'; ?>
 
-  <!-- Konten Utama -->
-  <main style="flex: 1; display: flex; justify-content: center; align-items: center; background: url('aset/background.jpg') no-repeat center center/cover; text-align: center;">
-    <div style="max-width: 600px; width: 100%; padding: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 15px; backdrop-filter: blur(10px); box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-      <!-- Logo -->
-      <div style="margin-bottom: 20px;">
-        <img src="aset/singa.png" alt="Leonor.AI Logo" style="width: 100px;">
+  <main class="login-container flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="login-card bg-white bg-opacity-90 p-4 p-md-5 shadow">
+
+            <div class="text-center mb-4">
+              <img src="aset/eco-green.png" alt="WorldGreen Logo" width="100" class="img-fluid">
+            </div>
+
+            <h2 class="text-center mb-4 text-success">
+              <i class="bi bi-door-open"></i> Masuk ke WorldGreen
+            </h2>
+
+            <form method="POST">
+              <div class="mb-3">
+                <label for="email" class="form-label">Alamat Email</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-success text-white">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="email@contoh.com">
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="password" class="form-label">Kata Sandi</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-success text-white">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan kata sandi">
+                </div>
+              </div>
+
+              <div class="d-grid mb-3">
+                 <a href="?page=produk" class="btn btn-success btn-lg fw-bold">Login</a>
+              </div>
+
+
+              <hr class="my-4">
+
+              <div class="text-center">
+                <p class="mb-0">Belum punya akun? 
+                  <a href="register.php" class="text-success fw-bold text-decoration-none">
+                    Daftar sekarang
+                  </a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-
-      <!-- Judul -->
-      <h3 style="color: black; font-size: 22px; margin-bottom: 20px;">Login to Leonor.AI</h3>
-
-      <!-- Pesan Error -->
-      <?php if (isset($error)): ?>
-        <div class="alert alert-danger" role="alert">
-          <?php echo $error; ?>
-        </div>
-      <?php endif; ?>
-
-      <!-- Form Login -->
-      <form action="" method="post">
-        <div style="margin-bottom: 15px;">
-          <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <input type="password" name="password" placeholder="Password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
-        </div>
-        <button type="submit" style="width: 100%; padding: 10px; font-size: 18px; background: gold; color: black; border: none; border-radius: 5px; cursor: pointer;">Login</button>
-      </form>
-
-      <!-- Garis Pemisah -->
-      <hr style="margin: 20px 0; border: 0; border-top: 1px solid white;">
-
-      <!-- Link Daftar -->
-      <p style="color: black;">Belum punya akun? <a href="?page=register" style="color: blue; text-decoration: none; font-weight: bold;">Daftar disini!</a></p>
     </div>
   </main>
 
-  <!-- Include Footer -->
-  <footer style="background: rgba(0, 0, 0, 0.8); color: white; padding: 10px 0; text-align: center;">
-    <div>
-      <p>&copy; 2024 Chat Zone | Follow us:</p>
-      <a href="https://www.instagram.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.facebook.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://twitter.com" target="_blank" style="color: white; margin: 0 10px; font-size: 20px;">
-        <i class="fab fa-twitter"></i>
-      </a>
+  <footer class="bg-dark text-white py-4 mt-auto">
+    <div class="container">
+      <div class="text-center">
+        <h5 class="mb-3">Ikuti Kami</h5>
+        <div class="social-links mb-3">
+          <a href="#" class="text-white mx-2"><i class="bi bi-instagram fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-facebook fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-twitter-x fs-4"></i></a>
+          <a href="#" class="text-white mx-2"><i class="bi bi-linkedin fs-4"></i></a>
+        </div>
+        <p class="mb-0">&copy; 2024 WorldGreen. Seluruh hak cipta dilindungi.</p>
+      </div>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
