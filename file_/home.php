@@ -118,9 +118,9 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body p-4">
           <div class="d-flex mb-3">
-            <img src="aset/testi1.jpg" class="rounded-circle me-3" width="60" height="60">
+            <img src="aset/andre.jpg" class="rounded-circle me-3" width="60" height="60">
             <div>
-              <h5 class="mb-0">Sarah Wijaya</h5>
+              <h5 class="mb-0">Andre Tulalit</h5>
               <small class="text-muted">Pemilik Eco Cafe</small>
             </div>
           </div>
@@ -140,9 +140,9 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body p-4">
           <div class="d-flex mb-3">
-            <img src="aset/testi2.jpg" class="rounded-circle me-3" width="60" height="60">
+            <img src="aset/ernest.jpg" class="rounded-circle me-3" width="60" height="60">
             <div>
-              <h5 class="mb-0">Budi Santoso</h5>
+              <h5 class="mb-0">Ernest Kewer Kewer</h5>
               <small class="text-muted">Kepala Keluarga</small>
             </div>
           </div>
@@ -162,9 +162,9 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body p-4">
           <div class="d-flex mb-3">
-            <img src="aset/testi3.jpg" class="rounded-circle me-3" width="60" height="60">
+            <img src="aset/jonathan.jpg" class="rounded-circle me-3" width="60" height="60">
             <div>
-              <h5 class="mb-0">Dewi Lestari</h5>
+              <h5 class="mb-0">Jonathan Alamak oy</h5>
               <small class="text-muted">Aktivis Lingkungan</small>
             </div>
           </div>

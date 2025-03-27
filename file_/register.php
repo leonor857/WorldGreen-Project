@@ -34,7 +34,7 @@
               <h2 class="text-success">
                 <i class="bi bi-person-plus"></i> Daftar Akun Baru
               </h2>
-              <p class="text-muted">Bergabunglah dengan komunitas peduli lingkungan</p>
+              <p class="text-muted">Bergabunglah dengan komunitas peduli lingkungan!</p>
             </div>
 
             <?php if (isset($error)): ?>
